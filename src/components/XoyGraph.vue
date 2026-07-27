@@ -147,14 +147,11 @@ type XoyGraphPoint = [x: number, y: number]
 
 const {
     loadData: loadDataProp,
-    infoVisible = false,
     isMobile = false,
     initial3D: initial3DProp,
 } = defineProps<{
     /** 加载指定坐标范围内数据的函数 */
     loadData: (params: XoyLoadDataParams) => Promise<XoyGraphData>
-    /** 是否显示详情，用于控制点击空白处时的行为 */
-    infoVisible?: boolean
     /** 是否处于移动端环境，影响默认 3D 开关 */
     isMobile?: boolean
     /** 初始是否启用 3D 模式 */
@@ -555,26 +552,18 @@ function onHammerTap(event: HammerInput) {
     const [x, y] = [Math.floor(point.x / itemSize.value), Math.floor(point.y / itemSize.value)]
     const xAxisItem = xAxisMap.value[x]
     const yAxisItem = yAxisMap.value[y]
-    if (xAxisItem && yAxisItem) {
-        if (selectedCoords.value && selectedCoords.value[0] === x && selectedCoords.value[1] === y) {
-            const edge = edgeMap.value[x]?.[y]
-            if (edge) {
-                emit('show-edge', edge)
-            } else if (xAxisItem.entity_id === yAxisItem.entity_id) {
-                setTimeout(() => {
-                    emit('show-entity', { id: xAxisItem.entity_id, title: xAxisItem.title, description: '' }, [x, y])
-                }, 50)
-            }
-        } else {
-            selectedCoords.value = [x, y]
-            emit('cancel-show')
+    if (selectedCoords.value && selectedCoords.value[0] === x && selectedCoords.value[1] === y) {
+        const edge = edgeMap.value[x]?.[y]
+        if (edge) {
+            emit('show-edge', edge)
+        } else if (xAxisItem && yAxisItem && xAxisItem.entity_id === yAxisItem.entity_id) {
+            setTimeout(() => {
+                emit('show-entity', { id: xAxisItem.entity_id, title: xAxisItem.title, description: '' }, [x, y])
+            }, 50)
         }
-        return
-    }
-    if (infoVisible) {
-        emit('cancel-show')
     } else {
-        selectedCoords.value = undefined
+        selectedCoords.value = [x, y]
+        emit('cancel-show')
     }
 }
 

@@ -93,7 +93,6 @@ npm publish
 | --- | --- | --- | --- |
 | `loadData` | `(params: XoyLoadDataParams) => Promise<XoyGraphData>` | 必填 | 加载指定坐标范围数据的函数 |
 | `centerCoords` | `XoyGraphCoords` | `[0, 0]` | 当前视图中心坐标，支持 `v-model` |
-| `infoVisible` | `boolean` | `false` | 是否显示详情，影响点击空白处行为 |
 | `isMobile` | `boolean` | `false` | 是否处于移动端环境 |
 | `initial3D` | `boolean` | `!isMobile` | 初始是否启用 3D 模式 |
 
