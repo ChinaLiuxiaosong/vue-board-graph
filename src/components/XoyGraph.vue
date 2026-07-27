@@ -3,7 +3,13 @@
         <div ref="graphContainer" class="graph-container" @wheel="onWheel">
             <template v-if="data">
                 <div class="graph-board">
-                    <div class="graph-grid">
+                    <div
+                        class="graph-grid"
+                        :style="{
+                            gridTemplateColumns: `repeat(${data.xDataRange[1] - data.xDataRange[0] + 1}, ${itemSizeValue})`,
+                            gridTemplateRows: `repeat(${data.yDataRange[1] - data.yDataRange[0] + 1}, ${itemSizeValue})`,
+                        }"
+                    >
                         <template v-for="item of dataList" :key="`[${item.dataCoords[0]}, ${item.dataCoords[1]}]`">
                             <div
                                 v-if="item.edge || item.entity"
@@ -757,14 +763,6 @@ const itemContent2DTransform = computed(() => `rotate(${-transformRotateDeg.valu
             margin-top: v-bind('`${gridOffset.y}px`');
             margin-left: v-bind('`${gridOffset.x}px`');
             display: grid;
-            grid-template-columns: repeat(
-                v-bind('data ? data.xDataRange[1] - data.xDataRange[0] + 1 : 0'),
-                v-bind('itemSizeValue')
-            );
-            grid-template-rows: repeat(
-                v-bind('data ? data.yDataRange[1] - data.yDataRange[0] + 1 : 0'),
-                v-bind('itemSizeValue')
-            );
             outline: 1px solid rgba(200, 200, 200, 0.7);
             z-index: 0;
 

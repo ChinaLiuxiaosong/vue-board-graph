@@ -1,6 +1,6 @@
 # vue-board-graph
 
-交互式坐标棋盘图（XOY Coordinate Board Graph）Vue 3 组件。
+交互式坐标棋盘图（Coordinate Board Graph）Vue 3 组件。
 
 ## 在线演示
 
