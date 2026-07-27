@@ -7,12 +7,16 @@
         <div class="demo-graph">
             <XoyGraph
                 v-model:center-coords="centerCoords"
-                :load-data="loadData"
+                :load-data="loadDataWithStats"
                 @show-edge="onShowEdge"
                 @show-entity="onShowEntity"
                 @cancel-show="onCancelShow"
                 @center-change="onCenterChange"
             />
+        </div>
+        <div class="demo-status">
+            中心：{{ centerCoords.join(', ') }}<br />
+            X轴：{{ stats.xAxis }} | Y轴：{{ stats.yAxis }} | 关系：{{ stats.items }}
         </div>
         <div v-if="info" class="demo-info">
             <template v-if="info.type === 'edge'">
@@ -33,12 +37,23 @@ import { XoyGraph, type XoyEdge, type XoyEntity, type XoyGraphCoords } from 'vue
 import { loadData } from './mockData'
 
 const centerCoords = ref<XoyGraphCoords>([500, 500])
+const stats = ref({ xAxis: 0, yAxis: 0, items: 0 })
 
 const info = ref<
     | { type: 'edge'; edge: XoyEdge }
     | { type: 'entity'; entity: XoyEntity; coords: XoyGraphCoords }
     | undefined
 >()
+
+async function loadDataWithStats(params: Parameters<typeof loadData>[0]) {
+    const data = await loadData(params)
+    stats.value = {
+        xAxis: data.xAxis.length,
+        yAxis: data.yAxis.length,
+        items: data.items.length,
+    }
+    return data
+}
 
 function onShowEdge(edge: XoyEdge) {
     info.value = { type: 'edge', edge }
@@ -100,6 +115,20 @@ body {
     flex: 1;
     position: relative;
     overflow: hidden;
+}
+
+.demo-status {
+    position: absolute;
+    top: 80px;
+    right: 16px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    font-size: 12px;
+    color: #4a5568;
+    pointer-events: none;
+    z-index: 2;
 }
 
 .demo-info {

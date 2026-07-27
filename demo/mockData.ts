@@ -29,7 +29,6 @@ const conceptPool = [
 ]
 
 const AXIS_MAX = 1000
-const CENTER = AXIS_MAX / 2
 const ENTITY_COUNT = 200
 const EDGE_COUNT = 500
 const DEFAULT_SEED = 42
@@ -45,21 +44,10 @@ function createRng(seed: number) {
     }
 }
 
-/**
- * 使用 Box-Muller 变换生成正态分布随机数，使实体集中在棋盘中心。
- */
-function randomNormal(mean: number, stdDev: number, random: () => number) {
-    const u1 = random()
-    const u2 = random()
-    const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2)
-    return mean + z0 * stdDev
-}
-
 interface MockEntity {
     id: string
     title: string
-    x: number
-    y: number
+    v: number
 }
 
 interface MockEdge {
@@ -78,30 +66,32 @@ let edges: MockEdge[] = []
 function buildMockData(currentSeed: number) {
     const random = createRng(currentSeed)
 
-    // 生成实体，按正态分布集中在棋盘中心，确保演示区域数据密集
-    entities = Array.from({ length: ENTITY_COUNT }, (_, i) => {
-        const x = Math.max(0, Math.min(AXIS_MAX, Math.round(randomNormal(CENTER, 120, random))))
-        const y = Math.max(0, Math.min(AXIS_MAX, Math.round(randomNormal(CENTER, 120, random))))
-        return {
-            id: `entity-${i}`,
-            title: conceptPool[i % conceptPool.length] + (Math.floor(i / conceptPool.length) || ''),
-            x,
-            y,
-        }
-    })
+    // 生成实体，每个实体占据对角线上的一个坐标 (v, v)
+    const usedValues = new Set<number>()
+    entities = []
+    while (entities.length < ENTITY_COUNT) {
+        const v = Math.floor(random() * (AXIS_MAX - 20)) + 10
+        if (usedValues.has(v)) continue
+        usedValues.add(v)
+        entities.push({
+            id: `entity-${entities.length}`,
+            title: conceptPool[entities.length % conceptPool.length] + (Math.floor(entities.length / conceptPool.length) || ''),
+            v,
+        })
+    }
 
-    // 按坐标排序，确保轴标签有序
-    entities.sort((a, b) => a.x - b.x || a.y - b.y)
+    entities.sort((a, b) => a.v - b.v)
 
-    // 生成边：每个实体连接 2-5 个最近邻
+    // 生成边：每个实体连接 2-5 个其他实体，边坐标为 (source.v, target.v)
     edges = []
     for (let i = 0; i < ENTITY_COUNT; i++) {
         const source = entities[i]
         const degree = 2 + Math.floor(random() * 4)
         const others = entities
+            .filter((target) => target.id !== source.id)
             .map((target) => ({
                 target,
-                distance: Math.hypot(target.x - source.x, target.y - source.y),
+                distance: Math.abs(target.v - source.v),
             }))
             .filter((item) => item.distance > 0)
             .sort((a, b) => a.distance - b.distance)
@@ -109,15 +99,13 @@ function buildMockData(currentSeed: number) {
 
         for (const { target, distance } of others) {
             const weight = Math.max(2, Math.min(20, Math.round(distance / 10)))
-            const midX = Math.round((source.x + target.x) / 2)
-            const midY = Math.round((source.y + target.y) / 2)
             edges.push({
                 id: `edge-${source.id}-${target.id}`,
                 edge_name: `${source.title},${target.title}`,
                 source,
                 target,
                 weight,
-                coords: [midX, midY],
+                coords: [source.v, target.v],
             })
         }
     }
@@ -153,18 +141,18 @@ export function loadData({ xRange, yRange }: XoyLoadDataParams): Promise<XoyGrap
     return new Promise((resolve) => {
         setTimeout(() => {
             const xAxis = entities
-                .filter((e) => inRange(e.x, xRange))
+                .filter((e) => inRange(e.v, xRange))
                 .map((e) => ({
-                    v: e.x,
+                    v: e.v,
                     title: e.title,
                     entity_id: e.id,
                 }))
                 .sort((a, b) => a.v - b.v)
 
             const yAxis = entities
-                .filter((e) => inRange(e.y, yRange))
+                .filter((e) => inRange(e.v, yRange))
                 .map((e) => ({
-                    v: e.y,
+                    v: e.v,
                     title: e.title,
                     entity_id: e.id,
                 }))
