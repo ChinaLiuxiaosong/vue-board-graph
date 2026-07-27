@@ -143,7 +143,7 @@ const {
     loadData: loadDataProp,
     infoVisible = false,
     isMobile = false,
-    initial3D = !isMobile,
+    initial3D: initial3DProp,
 } = defineProps<{
     /** 加载指定坐标范围内数据的函数 */
     loadData: (params: XoyLoadDataParams) => Promise<XoyGraphData>
@@ -154,6 +154,8 @@ const {
     /** 初始是否启用 3D 模式 */
     initial3D?: boolean
 }>()
+
+const initial3D = initial3DProp ?? !isMobile
 
 const centerCoords = defineModel<XoyGraphCoords>('centerCoords', {
     default: () => [0, 0] as XoyGraphCoords,
