@@ -1,15 +1,15 @@
-# vue-xoy
+# vue-board-graph
 
 交互式坐标棋盘图（XOY Coordinate Board Graph）Vue 3 组件。
 
 ## 在线演示
 
-[GitHub Pages Demo](https://chinaliuxiaosong.github.io/vue-xoy/)
+[GitHub Pages Demo](https://chinaliuxiaosong.github.io/vue-board-graph/)
 
 ## 安装
 
 ```bash
-bun add vue-xoy
+bun add vue-board-graph
 ```
 
 ## 使用
@@ -21,7 +21,7 @@ bun add vue-xoy
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { XoyGraph, type XoyGraphCoords, type XoyGraphData, type XoyLoadDataParams } from 'vue-xoy'
+import { XoyGraph, type XoyGraphCoords, type XoyGraphData, type XoyLoadDataParams } from 'vue-board-graph'
 
 const centerCoords = ref<XoyGraphCoords>([500, 500])
 
@@ -52,7 +52,7 @@ async function loadData({ xRange, yRange }: XoyLoadDataParams): Promise<XoyGraph
 </script>
 
 <style>
-@import 'vue-xoy/style.css';
+@import 'vue-board-graph/style.css';
 </style>
 ```
 

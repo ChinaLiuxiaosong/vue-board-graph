@@ -1,4 +1,4 @@
-import type { XoyGraphData, XoyLoadDataParams, XoyGraphRange } from 'vue-xoy'
+import type { XoyGraphData, XoyLoadDataParams, XoyGraphRange } from 'vue-board-graph'
 
 const conceptPool = [
     '人工智能',

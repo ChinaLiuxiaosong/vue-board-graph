@@ -20,7 +20,7 @@
         "declarationMap": true,
         "paths": {
             "@/*": ["./src/*"],
-            "vue-xoy": ["./src/index.ts"]
+            "vue-board-graph": ["./src/index.ts"]
         }
     },
     "include": ["src/**/*.ts", "src/**/*.vue", "demo/**/*.ts", "demo/**/*.vue"],

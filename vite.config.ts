@@ -23,8 +23,8 @@ export default defineConfig(({ mode }) => {
             build: {
                 lib: {
                     entry: resolve(__dirname, 'src/index.ts'),
-                    name: 'VueXoy',
-                    fileName: (format) => (format === 'es' ? 'vue-xoy.mjs' : 'vue-xoy.cjs'),
+                    name: 'VueBoardGraph',
+                    fileName: (format) => (format === 'es' ? 'vue-board-graph.mjs' : 'vue-board-graph.cjs'),
                     formats: ['es', 'cjs'],
                 },
                 rollupOptions: {
@@ -47,7 +47,7 @@ export default defineConfig(({ mode }) => {
     return {
         ...shared,
         root: resolve(__dirname, 'demo'),
-        base: '/vue-xoy/',
+        base: '/vue-board-graph/',
         build: {
             outDir: resolve(__dirname, 'dist-demo'),
             emptyOutDir: true,
@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
         resolve: {
             alias: {
                 '@': resolve(__dirname, 'src'),
-                'vue-xoy': resolve(__dirname, 'src/index.ts'),
+                'vue-board-graph': resolve(__dirname, 'src/index.ts'),
             },
         },
     }

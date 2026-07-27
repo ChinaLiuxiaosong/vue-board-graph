@@ -1,7 +1,7 @@
 <template>
     <div class="demo-app">
         <div class="demo-header">
-            <h1>Vue XOY</h1>
+            <h1>Vue Board Graph</h1>
             <p>交互式坐标棋盘图组件演示。点击网格选中，再次点击触发节点或关系。支持拖拽、缩放、旋转、2D/3D 切换。点击空白处取消选中。</p>
         </div>
         <div class="demo-graph">
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { XoyGraph, type XoyEdge, type XoyEntity, type XoyGraphCoords } from 'vue-xoy'
+import { XoyGraph, type XoyEdge, type XoyEntity, type XoyGraphCoords } from 'vue-board-graph'
 import { loadData } from './mockData'
 
 const centerCoords = ref<XoyGraphCoords>([500, 500])

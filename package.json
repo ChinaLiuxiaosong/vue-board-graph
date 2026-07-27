@@ -1,15 +1,15 @@
 {
-    "name": "vue-xoy",
+    "name": "vue-board-graph",
     "version": "0.1.0",
-    "description": "An interactive XOY coordinate board graph component for Vue 3",
+    "description": "An interactive coordinate board graph component for Vue 3",
     "type": "module",
-    "main": "./dist/vue-xoy.cjs",
-    "module": "./dist/vue-xoy.mjs",
+    "main": "./dist/vue-board-graph.cjs",
+    "module": "./dist/vue-board-graph.mjs",
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/vue-xoy.mjs",
-            "require": "./dist/vue-xoy.cjs",
+            "import": "./dist/vue-board-graph.mjs",
+            "require": "./dist/vue-board-graph.cjs",
             "types": "./dist/index.d.ts"
         },
         "./style.css": "./dist/style.css"
@@ -48,18 +48,18 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ChinaLiuxiaosong/vue-xoy.git"
+        "url": "git+https://github.com/ChinaLiuxiaosong/vue-board-graph.git"
     },
-    "homepage": "https://chinaliuxiaosong.github.io/vue-xoy/",
+    "homepage": "https://chinaliuxiaosong.github.io/vue-board-graph/",
     "bugs": {
-        "url": "https://github.com/ChinaLiuxiaosong/vue-xoy/issues"
+        "url": "https://github.com/ChinaLiuxiaosong/vue-board-graph/issues"
     },
     "keywords": [
         "vue",
         "vue3",
-        "xoy",
-        "coordinate",
         "board",
+        "coordinate",
+        "xoy",
         "graph",
         "component"
     ],
