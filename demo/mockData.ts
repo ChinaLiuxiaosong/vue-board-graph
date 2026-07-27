@@ -29,8 +29,9 @@ const conceptPool = [
 ]
 
 const AXIS_MAX = 1000
-const ENTITY_COUNT = 120
-const EDGE_COUNT = 300
+const CENTER = AXIS_MAX / 2
+const ENTITY_COUNT = 200
+const EDGE_COUNT = 500
 const DEFAULT_SEED = 42
 
 /**
@@ -42,6 +43,16 @@ function createRng(seed: number) {
         state = (state * 9301 + 49297) % 233280
         return state / 233280
     }
+}
+
+/**
+ * 使用 Box-Muller 变换生成正态分布随机数，使实体集中在棋盘中心。
+ */
+function randomNormal(mean: number, stdDev: number, random: () => number) {
+    const u1 = random()
+    const u2 = random()
+    const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2)
+    return mean + z0 * stdDev
 }
 
 interface MockEntity {
@@ -67,10 +78,10 @@ let edges: MockEdge[] = []
 function buildMockData(currentSeed: number) {
     const random = createRng(currentSeed)
 
-    // 生成实体，均匀分布在坐标轴上
+    // 生成实体，按正态分布集中在棋盘中心，确保演示区域数据密集
     entities = Array.from({ length: ENTITY_COUNT }, (_, i) => {
-        const x = Math.floor(random() * (AXIS_MAX - 20)) + 10
-        const y = Math.floor(random() * (AXIS_MAX - 20)) + 10
+        const x = Math.max(0, Math.min(AXIS_MAX, Math.round(randomNormal(CENTER, 120, random))))
+        const y = Math.max(0, Math.min(AXIS_MAX, Math.round(randomNormal(CENTER, 120, random))))
         return {
             id: `entity-${i}`,
             title: conceptPool[i % conceptPool.length] + (Math.floor(i / conceptPool.length) || ''),
