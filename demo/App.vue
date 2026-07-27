@@ -119,8 +119,8 @@ body {
 
 .demo-status {
     position: absolute;
-    top: 80px;
-    right: 16px;
+    bottom: 16px;
+    left: 16px;
     padding: 6px 12px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
