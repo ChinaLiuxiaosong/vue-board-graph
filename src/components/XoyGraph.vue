@@ -557,11 +557,14 @@ function onHammerTap(event: HammerInput) {
         if (edge) {
             emit('show-edge', edge)
         } else if (xAxisItem && yAxisItem && xAxisItem.entity_id === yAxisItem.entity_id) {
+            // 延迟触发 show-entity，避免弹层渲染后同一 click 事件透传到弹层关闭按钮，
+            // 导致弹层刚打开就被关闭。
             setTimeout(() => {
                 emit('show-entity', { id: xAxisItem.entity_id, title: xAxisItem.title, description: '' }, [x, y])
             }, 50)
         }
     } else {
+        // 棋盘上的所有格子均可选中（包括空白格）
         selectedCoords.value = [x, y]
         emit('cancel-show')
     }
